@@ -3,6 +3,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
+import PanelHeader from '@/components/detail/PanelHeader';
+import CameraFeed from '@/components/detail/CameraFeed';
 
 export default function DetailPanel() {
   const { state, dispatch } = useApp();
@@ -20,17 +22,14 @@ export default function DetailPanel() {
         >
           <button
             onClick={() => dispatch({ type: 'CLOSE_PANEL' })}
-            className="absolute top-4 right-4 p-2 text-secondary hover:text-primary transition-colors"
+            className="absolute top-4 right-4 z-10 p-2 text-secondary hover:text-primary transition-colors"
             aria-label="Close panel"
           >
             <X size={16} />
           </button>
 
-          <div className="p-6 pt-12">
-            <h2 className="text-lg font-semibold text-primary">
-              {state.selectedAnimal.name}
-            </h2>
-          </div>
+          <PanelHeader animal={state.selectedAnimal} />
+          <CameraFeed animal={state.selectedAnimal} onExpand={() => {}} />
         </motion.div>
       )}
     </AnimatePresence>
