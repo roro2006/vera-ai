@@ -19,7 +19,7 @@ export default function BottomStatusBar() {
   return (
     <div className="flex h-10 items-center justify-center border-t border-border bg-surface">
       <span className="text-xs text-secondary">
-        {totalAnimals} animals monitored &middot; <span className="text-alert font-medium">{alertCount} alerts active </span>&middot; Last updated {seconds}s ago
+        {totalAnimals} animals monitored &middot; <span style={{ color: '#F43F5E' }}>{alertCount} alerts active </span>&middot; Last updated {seconds}s ago
       </span>
     </div>
   );

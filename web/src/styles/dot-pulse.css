@@ -39,12 +39,12 @@
 
 .dot-pulse-mild-concern {
   animation: pulse-mild-concern 3s ease-in-out infinite;
-  box-shadow: 0 0 6px rgba(212, 152, 44, 0.4);
+  box-shadow: 0 0 6px rgba(217, 119, 6, 0.4);
 }
 
 .dot-pulse-alert {
   animation: pulse-alert 1.5s ease-in-out infinite;
-  box-shadow: 0 0 6px rgba(204, 68, 68, 0.4);
+  box-shadow: 0 0 6px rgba(244, 63, 94, 0.4);
 }
 
 .dot-pulse-offline {

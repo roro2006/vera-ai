@@ -5,17 +5,17 @@ import { Info } from 'lucide-react';
 
 const thresholds = [
   {
-    color: '#4E9A3D',
+    color: '#2DD4BF',
     label: 'Healthy',
     description: 'Within 10% of baseline',
   },
   {
-    color: '#D4982C',
+    color: '#D97706',
     label: 'Mild Concern',
     description: '10\u201320% deviation',
   },
   {
-    color: '#CC4444',
+    color: '#F43F5E',
     label: 'Alert',
     description: '>20% deviation',
   },

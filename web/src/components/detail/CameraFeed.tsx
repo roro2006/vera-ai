@@ -8,9 +8,9 @@ interface CameraFeedProps {
 }
 
 const STATE_PILLS: { key: BehaviorState; label: string; color: string }[] = [
-  { key: 'moving', label: 'Moving', color: '#5088C5' },
-  { key: 'resting', label: 'Resting', color: '#9B7EC8' },
-  { key: 'eating', label: 'Eating', color: '#D4982C' },
+  { key: 'moving', label: 'Moving', color: '#3B82F6' },
+  { key: 'resting', label: 'Resting', color: '#A78BFA' },
+  { key: 'eating', label: 'Eating', color: '#D97706' },
 ];
 
 /** Extract YouTube embed URL from various YT URL formats */
@@ -82,7 +82,7 @@ export default function CameraFeed({ animal, onExpand }: CameraFeedProps) {
         <div className="absolute top-2 left-2 flex items-center gap-1 bg-black/60 rounded-full px-2 py-0.5">
           <span
             className="inline-block w-1.5 h-1.5 rounded-full"
-            style={{ backgroundColor: embedUrl ? '#4E9A3D' : '#CC4444' }}
+            style={{ backgroundColor: embedUrl ? '#22C55E' : '#F43F5E' }}
           />
           <span className="font-medium text-[10px] text-white">
             {embedUrl ? 'Live Feed' : 'Camera Feed'}

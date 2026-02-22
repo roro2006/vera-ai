@@ -19,10 +19,10 @@ export default function TopBar() {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <polygon points="4,8 7,3 10,8" fill={dark ? '#6DAF4F' : '#3D7A22'} />
-            <polygon points="14,8 17,3 20,8" fill={dark ? '#6DAF4F' : '#3D7A22'} />
-            <circle cx="12" cy="14" r="8" fill={dark ? '#6DAF4F' : '#3D7A22'} />
-            <circle cx="12" cy="16" r="1.5" fill={dark ? '#121610' : '#F4EEE3'} />
+            <polygon points="4,8 7,3 10,8" fill="currentColor" />
+            <polygon points="14,8 17,3 20,8" fill="currentColor" />
+            <circle cx="12" cy="14" r="8" fill="currentColor" />
+            <circle cx="12" cy="16" r="1.5" fill={dark ? '#141414' : 'white'} />
           </svg>
         </div>
         <span className="text-lg font-semibold text-primary">Vera</span>
@@ -36,7 +36,7 @@ export default function TopBar() {
 
         <button
           onClick={() => dispatch({ type: 'TOGGLE_THEME' })}
-          className="ml-1 flex items-center justify-center w-8 h-8 rounded-md border border-border text-secondary hover:text-primary hover:border-accent transition-colors duration-150"
+          className="ml-1 flex items-center justify-center w-8 h-8 rounded-md border border-border text-secondary hover:text-primary hover:border-primary transition-colors duration-150"
           aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
         >
           {dark ? <Sun size={14} /> : <Moon size={14} />}

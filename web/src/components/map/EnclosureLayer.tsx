@@ -63,7 +63,7 @@ export default function EnclosureLayer() {
     })),
   }), [enclosureStatusMap]);
 
-  // Theme-dependent opacity for enclosure fills (slightly higher on dark for visibility)
+  // Slightly higher fill opacity on dark map for visibility
   const fillAlpha = dark ? 0.18 : 0.12;
 
   return (
@@ -75,10 +75,10 @@ export default function EnclosureLayer() {
           paint={{
             'circle-color': [
               'match', ['get', 'status'],
-              'alert',        `rgba(204,68,68,${fillAlpha})`,
-              'mild_concern', `rgba(212,152,44,${fillAlpha})`,
-              'healthy',      `rgba(78,154,61,${fillAlpha})`,
-              /* offline */   dark ? 'rgba(50,50,42,0.40)' : 'rgba(173,165,146,0.50)',
+              'alert',        `rgba(244,63,94,${fillAlpha})`,
+              'mild_concern', `rgba(217,119,6,${fillAlpha})`,
+              'healthy',      `rgba(45,212,191,${fillAlpha})`,
+              /* offline */   dark ? 'rgba(60,60,60,0.40)' : 'rgba(245,245,245,0.75)',
             ],
             'circle-opacity': visible ? 1 : 0,
             'circle-opacity-transition': { duration: 800, delay: 200 },
@@ -91,10 +91,10 @@ export default function EnclosureLayer() {
             'circle-stroke-width': 1.5,
             'circle-stroke-color': [
               'match', ['get', 'status'],
-              'alert',        '#CC4444',
-              'mild_concern', '#D4982C',
-              'healthy',      '#4E9A3D',
-              /* offline */   dark ? '#3A3A30' : '#D0D0D0',
+              'alert',        '#F43F5E',
+              'mild_concern', '#D97706',
+              'healthy',      '#2DD4BF',
+              /* offline */   dark ? '#444444' : '#D0D0D0',
             ],
             'circle-stroke-opacity': visible ? 1 : 0,
             'circle-stroke-opacity-transition': { duration: 800, delay: 400 },
@@ -111,15 +111,15 @@ export default function EnclosureLayer() {
         >
           <div className={`backdrop-blur-sm px-2 py-0.5 rounded-md ${
             dark
-              ? 'bg-[#1C221A]/80'
-              : 'bg-[#FEFBF3]/80'
+              ? 'bg-[#1E1E1E]/80'
+              : 'bg-white/70'
           }`}>
             <span
               className="font-medium"
               style={{
-                fontFamily: 'var(--font-outfit), Outfit, sans-serif',
+                fontFamily: 'inherit',
                 fontSize: '13px',
-                color: dark ? '#8B9A7A' : '#7B8968',
+                color: dark ? '#888888' : '#6B6B6B',
               }}
             >
               {enc.name}

@@ -17,12 +17,12 @@ interface HistorySparklinesProps {
 }
 
 const BEHAVIORS = [
-  { key: 'moving' as const, label: 'Moving', color: '#5088C5' },
-  { key: 'resting' as const, label: 'Resting', color: '#9B7EC8' },
-  { key: 'eating' as const, label: 'Eating', color: '#D4982C' },
+  { key: 'moving' as const, label: 'Moving', color: '#3B82F6' },
+  { key: 'resting' as const, label: 'Resting', color: '#A78BFA' },
+  { key: 'eating' as const, label: 'Eating', color: '#D97706' },
 ] as const;
 
-const ANOMALY_COLOR = '#CC4444';
+const ANOMALY_COLOR = '#F43F5E';
 
 function CustomTooltip({
   active,
