@@ -69,13 +69,13 @@ In `src/index.css`, add after the import:
   --color-border: #E5E5E5;
   --color-primary: #1A1A1A;
   --color-secondary: #6B6B6B;
-  --color-healthy: #22C55E;
-  --color-mild-concern: #F59E0B;
-  --color-alert: #EF4444;
+  --color-healthy: #2DD4BF;
+  --color-mild-concern: #D97706;
+  --color-alert: #F43F5E;
   --color-offline: #D4D4D4;
   --color-behavior-moving: #3B82F6;
   --color-behavior-resting: #A78BFA;
-  --color-behavior-eating: #F59E0B;
+  --color-behavior-eating: #D97706;
 }
 ```
 
@@ -91,7 +91,11 @@ Expected: Vite dev server starts, page loads with default React content.
 
 ```tsx
 export default function App() {
-  return <div className="h-screen w-screen bg-white font-sans text-primary">Polar</div>
+  return <div className="relative h-screen w-screen bg-white font-sans text-primary">
+    {/* Noise texture overlay for analog warmth */}
+    <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.02]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%270 0 256 256%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27noise%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23noise)%27/%3E%3C/svg%3E")' }} />
+    Polar
+  </div>
 }
 ```
 
@@ -297,7 +301,7 @@ git commit -m "feat: add app state context with useReducer"
 
 Create `src/components/TopBar.tsx`:
 - 56px height, white bg, bottom border `#E5E5E5`
-- Left: polar bear SVG (simple inline SVG — a circle with ears for now, with CSS breathing animation: `translateY` oscillating 2px over 4s ease-in-out infinite) + "Polar" text in Inter 600 18px
+- Left: geometric polar bear SVG mark (minimal: head circle, two ear triangles, nose dot — all `#1A1A1A` monochrome, ~24px) with CSS breathing animation (`translateY` oscillating 2px over 4s ease-in-out infinite) + "Polar" text in Inter 600 18px
 - Right: "Columbus Zoo" text + red 8px dot + "Camera Feed" label in secondary text
 - The breathing animation is a CSS `@keyframes` applied to the SVG wrapper
 
@@ -353,9 +357,10 @@ Create `src/components/map/EnclosureLayer.tsx`:
 - Import animal data to check if any animal in an enclosure has alert status
 - Render a `<Source>` with GeoJSON FeatureCollection of all enclosure polygons
 - Render two `<Layer>` components:
-  - Fill layer: `#F5F5F5` fill, with conditional red tint `rgba(239,68,68,0.03)` for alert enclosures (use `case` expression in paint property keyed on enclosure `id`)
-  - Line layer: dashed gray `#E0E0E0` by default, red `#EF4444` for alert enclosures
-- Enclosure labels rendered as `<Marker>` components at each enclosure's `labelPosition` — Inter 500, 11px, secondary color
+  - Fill layer: `#F5F5F5` fill, with conditional coral tint `rgba(244,63,94,0.03)` for alert enclosures (use `case` expression in paint property keyed on enclosure `id`)
+  - Line layer: dashed gray `#E0E0E0` by default, coral `#F43F5E` for alert enclosures
+  - Polygon fill-opacity animates from 0 to target value with staggered delay (200ms per enclosure) after map load — use `fill-opacity-transition` paint property or React state toggle
+- Enclosure labels rendered as `<Marker>` components at each enclosure's `labelPosition` — Inter 500, 11px, secondary color, with frosted glass backdrop (`backdrop-blur-sm bg-white/70 px-2 py-0.5 rounded-md`)
 
 **Step 4: Add to App layout**
 
@@ -385,8 +390,8 @@ git commit -m "feat: add mapbox map with enclosure polygon layers"
 
 Create `src/styles/dot-pulse.css` with keyframes:
 - `.dot-pulse-healthy`: scale 1→1.15→1, opacity 1→0.7→1 over 3s ease-in-out infinite
-- `.dot-pulse-mild-concern`: same timing as healthy but with amber box-shadow glow
-- `.dot-pulse-alert`: scale 1→1.2→1, opacity 1→0.6→1 over 1.5s ease-in-out infinite, with red box-shadow glow (`0 0 6px rgba(239,68,68,0.4)`)
+- `.dot-pulse-mild-concern`: same timing as healthy but with ochre box-shadow glow
+- `.dot-pulse-alert`: scale 1→1.2→1, opacity 1→0.6→1 over 1.5s ease-in-out infinite, with coral box-shadow glow (`0 0 6px rgba(244,63,94,0.4)`)
 - `.dot-pulse-offline`: no animation (static)
 - `.dot-selected`: no pulse, double ring via box-shadow (`0 0 0 2px white, 0 0 0 4px var(--ring-color)`)
 
@@ -397,14 +402,14 @@ Import this CSS file in `src/main.tsx`.
 Create `src/components/map/AnimalDot.tsx`:
 - Props: `animal: Animal`, `isSelected: boolean`
 - Renders a 12px circle div with background color mapped from `animal.status`:
-  - healthy → `#22C55E`, mild_concern → `#F59E0B`, alert → `#EF4444`, offline → `#D4D4D4`
+  - healthy → `#2DD4BF` (teal), mild_concern → `#D97706` (ochre), alert → `#F43F5E` (coral), offline → `#D4D4D4`
 - Applies pulse CSS class based on status (unless `isSelected`, then applies `.dot-selected`)
 - `cursor: pointer`
 - `onClick`: dispatch `SELECT_ANIMAL` via context
 - Hover state managed with `onMouseEnter`/`onMouseLeave` + 300ms timeout:
   - On enter: start a 300ms timer. If timer fires, show tooltip.
   - On leave: clear the timer, hide tooltip.
-  - Tooltip: absolutely positioned div above the dot showing `"Name · Status"` in Inter 400 12px, white bg, shadow, 8px border-radius, fade-in 150ms
+  - Tooltip: absolutely positioned div above the dot showing `"Name · Status"` in Inter 400 12px, white bg, shadow, 8px border-radius, fade-in 150ms, with a small downward-pointing CSS caret/arrow (`border` trick or `clip-path`) connecting the tooltip to the dot
 
 **Step 3: Build AnimalMarkers component**
 
@@ -494,7 +499,7 @@ Create `src/components/detail/PanelHeader.tsx`:
 Create `src/components/detail/CameraFeed.tsx`:
 - Props: `animal: Animal`, `onExpand: () => void`
 - Rounded 12px container, aspect-ratio 16/9, bg `#F5F5F5`
-- If `cameraFrameUrl` is null: show gray placeholder with centered text "No camera data available." in secondary color
+- If `cameraFrameUrl` is null: show gray placeholder with a subtle centered animal silhouette SVG (generic quadruped outline, `opacity-[0.08]`, ~80px wide) and "No camera data available." text below it in secondary color
 - If URL exists: `<img>` tag with `object-fit: cover`
 - Top-left: pill overlay with red 6px dot + "Camera Feed" in Inter 500 10px white text on `rgba(0,0,0,0.6)` rounded pill
 - Below the feed: three state pills in a row. The active `currentState` pill is fully opaque with its color, others are dimmed (`opacity-30`):
@@ -664,9 +669,9 @@ Create `src/components/map/ThresholdLegend.tsx`:
 - Popover content:
   - Title: "Health Thresholds" Inter 600, 14px
   - Three rows, each with a colored dot + status name + description:
-    - Green dot: "Healthy — Within 10% of baseline"
-    - Amber dot: "Mild Concern — 10–20% deviation"
-    - Red dot: "Alert — >20% deviation"
+    - Teal dot: "Healthy — Within 10% of baseline"
+    - Ochre dot: "Mild Concern — 10–20% deviation"
+    - Coral dot: "Alert — >20% deviation"
   - Inter 400, 12px for descriptions
 - Click outside or click icon again to close
 
