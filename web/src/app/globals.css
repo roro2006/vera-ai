@@ -27,12 +27,16 @@
   }
 }
 
+/* Dark mode overrides. IMPORTANT: Keep [data-theme="dark"] and
+   @media (prefers-color-scheme: dark) blocks in sync. The first handles
+   explicit toggles (dashboard), the second handles system preference (landing). */
 [data-theme="dark"] {
   --color-surface: #141414;
   --color-border: #2A2A2A;
   --color-primary: #EBEBEB;
   --color-secondary: #888888;
   --color-surface-alt: #1E1E1E;
+  --color-offline: #525252;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -42,5 +46,32 @@
     --color-primary: #EBEBEB;
     --color-secondary: #888888;
     --color-surface-alt: #1E1E1E;
+    --color-offline: #525252;
   }
+}
+
+.landing-nav-link {
+  font-size: 13px;
+  color: var(--color-secondary);
+  text-decoration: none;
+  transition: color 200ms;
+}
+.landing-nav-link:hover {
+  color: var(--color-primary);
+}
+.landing-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-surface);
+  background: var(--color-primary);
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 7px;
+  transition: opacity 200ms;
+}
+.landing-cta:hover {
+  opacity: 0.8;
 }
