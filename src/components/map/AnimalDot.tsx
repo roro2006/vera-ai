@@ -103,11 +103,9 @@ export default function AnimalDot({ animal, isSelected }: AnimalDotProps) {
 
       {/* Dot */}
       <div
-        className={dotClass}
+        className={`${dotClass} w-4 h-4 lg:w-3 lg:h-3`}
         onClick={handleClick}
         style={{
-          width: 12,
-          height: 12,
           borderRadius: '50%',
           backgroundColor: color,
           cursor: 'pointer',
