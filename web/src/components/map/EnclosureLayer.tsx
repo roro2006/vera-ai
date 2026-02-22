@@ -41,7 +41,7 @@ export default function EnclosureLayer() {
     })),
   }), [alertEnclosureIds]);
 
-  // Build Mapbox match expressions for conditional styling based on alert status
+  // Build GL match expressions for conditional styling based on alert status
   const alertIds = Array.from(alertEnclosureIds);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

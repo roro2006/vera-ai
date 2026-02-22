@@ -20,6 +20,14 @@ export default function MapView() {
     return () => clearTimeout(timeout);
   }, []);
 
+  if (!MAPTILER_KEY) {
+    return (
+      <div className="relative flex-1 flex items-center justify-center bg-gray-100 text-gray-500 text-sm">
+        Map unavailable: set <code className="mx-1 px-1 bg-gray-200 rounded">NEXT_PUBLIC_MAPTILER_KEY</code> in <code className="mx-1 px-1 bg-gray-200 rounded">.env.local</code>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`relative flex-1 transition-opacity duration-[800ms] ${
