@@ -55,9 +55,8 @@ export default function DetailPanel() {
           <HistorySparklines history7d={state.selectedAnimal.history7d} behaviorToday={state.selectedAnimal.behaviorToday} />
           <AlertFeed alerts={state.selectedAnimal.alerts} />
 
-          {modalOpen && state.selectedAnimal.cameraFrameUrl && (
+          {modalOpen && (
             <CameraModal
-              imageUrl={state.selectedAnimal.cameraFrameUrl}
               animalName={state.selectedAnimal.name}
               onClose={() => setModalOpen(false)}
             />

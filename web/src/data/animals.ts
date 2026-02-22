@@ -3,8 +3,8 @@ import type { Animal } from '@/types';
 export const animals: Animal[] = [
   // ── Polar Frontier ──────────────────────────────────────────────
   {
-    id: 'nanuq',
-    name: 'Nanuq',
+    id: 'vera',
+    name: 'Vera',
     species: 'Polar Bear',
     status: 'healthy',
     position: { lat: 40.1575, lng: -83.1185 },
@@ -24,8 +24,8 @@ export const animals: Animal[] = [
     ],
   },
   {
-    id: 'nanuk',
-    name: 'Nanuk',
+    id: 'nanuq',
+    name: 'Nanuq',
     species: 'Arctic Fox',
     status: 'healthy',
     position: { lat: 40.1572, lng: -83.1190 },

@@ -43,7 +43,7 @@ export default function MapView() {
         initialViewState={{
           latitude: 40.156,
           longitude: -83.118,
-          zoom: 16,
+          zoom: 16.25,
         }}
         style={{ width: '100%', height: '100%' }}
         mapStyle={`https://api.maptiler.com/maps/dataviz-light/style.json?key=${MAPTILER_KEY}`}

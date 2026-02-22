@@ -102,12 +102,13 @@ export default function EnclosureLayer() {
           key={enc.id}
           latitude={enc.labelPosition.lat}
           longitude={enc.labelPosition.lng}
-          anchor="center"
+          anchor="bottom"
+          offset={[0, -12]}
         >
           <div className="backdrop-blur-sm bg-white/70 px-2 py-0.5 rounded-md">
             <span
               className="text-secondary font-medium"
-              style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px' }}
+              style={{ fontFamily: 'Inter, sans-serif', fontSize: '15px' }}
             >
               {enc.name}
             </span>

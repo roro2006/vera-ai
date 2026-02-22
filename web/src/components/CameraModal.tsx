@@ -4,12 +4,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 
 interface CameraModalProps {
-  imageUrl: string;
   animalName: string;
   onClose: () => void;
 }
 
-export default function CameraModal({ imageUrl, animalName, onClose }: CameraModalProps) {
+export default function CameraModal({ animalName, onClose }: CameraModalProps) {
   return (
     <AnimatePresence>
       <motion.div
@@ -40,10 +39,14 @@ export default function CameraModal({ imageUrl, animalName, onClose }: CameraMod
             <X size={16} />
           </button>
 
-          {/* Image */}
-          <img
-            src={imageUrl}
-            alt={animalName}
+          {/* Video */}
+          <video
+            src="/api/video"
+            autoPlay
+            loop
+            muted
+            playsInline
+            controls
             className="object-contain w-full h-auto max-h-[70vh] rounded"
           />
 
