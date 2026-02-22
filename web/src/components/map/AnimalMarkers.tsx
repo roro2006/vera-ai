@@ -1,7 +1,6 @@
 'use client';
 
-import { Marker } from 'react-map-gl/mapbox';
-import { animals } from '@/data/animals';
+import { Marker } from 'react-map-gl/maplibre';
 import { useApp } from '@/context/AppContext';
 import AnimalDot from '@/components/map/AnimalDot';
 
@@ -10,7 +9,7 @@ export default function AnimalMarkers() {
 
   return (
     <>
-      {animals.map((animal) => (
+      {state.animals.map((animal) => (
         <Marker
           key={animal.id}
           longitude={animal.position.lng}

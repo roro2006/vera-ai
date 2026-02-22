@@ -5,17 +5,17 @@ import { Info } from 'lucide-react';
 
 const thresholds = [
   {
-    color: '#2DD4BF',
+    color: '#4E9A3D',
     label: 'Healthy',
     description: 'Within 10% of baseline',
   },
   {
-    color: '#D97706',
+    color: '#D4982C',
     label: 'Mild Concern',
     description: '10\u201320% deviation',
   },
   {
-    color: '#F43F5E',
+    color: '#CC4444',
     label: 'Alert',
     description: '>20% deviation',
   },
@@ -50,7 +50,7 @@ export default function ThresholdLegend() {
       </button>
 
       {open && (
-        <div className="absolute bottom-full left-0 mb-2 w-60 rounded-xl bg-white p-3 shadow-md">
+        <div className="absolute bottom-full left-0 mb-2 w-60 rounded-xl bg-surface border border-border p-3 shadow-md">
           <h4 className="mb-2 text-sm font-semibold">Health Thresholds</h4>
           {thresholds.map((t) => (
             <div key={t.label} className="mb-1.5 flex items-start gap-2">

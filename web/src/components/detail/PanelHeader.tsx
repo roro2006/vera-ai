@@ -7,10 +7,10 @@ interface PanelHeaderProps {
 }
 
 const STATUS_DOT_COLORS: Record<HealthStatus, string> = {
-  healthy: '#2DD4BF',
-  mild_concern: '#D97706',
-  alert: '#F43F5E',
-  offline: '#D4D4D4',
+  healthy: '#4E9A3D',
+  mild_concern: '#D4982C',
+  alert: '#CC4444',
+  offline: '#ADA592',
 };
 
 export default function PanelHeader({ animal }: PanelHeaderProps) {
