@@ -14,6 +14,7 @@
   --color-behavior-moving: #3B82F6;
   --color-behavior-resting: #A78BFA;
   --color-behavior-eating: #D97706;
+  --color-surface-alt: #F7F7F7;
   --animate-breathe: breathe 4s ease-in-out infinite;
 }
 
@@ -31,4 +32,15 @@
   --color-border: #2A2A2A;
   --color-primary: #EBEBEB;
   --color-secondary: #888888;
+  --color-surface-alt: #1E1E1E;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-surface: #141414;
+    --color-border: #2A2A2A;
+    --color-primary: #EBEBEB;
+    --color-secondary: #888888;
+    --color-surface-alt: #1E1E1E;
+  }
 }
