@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { Source, Layer, Marker } from 'react-map-gl/mapbox';
+import { Source, Layer, Marker } from 'react-map-gl/maplibre';
 import { enclosures } from '@/data/enclosures';
 import { animals } from '@/data/animals';
 import EnclosureWarningBadge from './EnclosureWarningBadge';

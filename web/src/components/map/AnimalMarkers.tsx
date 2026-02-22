@@ -1,6 +1,6 @@
 'use client';
 
-import { Marker } from 'react-map-gl/mapbox';
+import { Marker } from 'react-map-gl/maplibre';
 import { animals } from '@/data/animals';
 import { useApp } from '@/context/AppContext';
 import AnimalDot from '@/components/map/AnimalDot';
