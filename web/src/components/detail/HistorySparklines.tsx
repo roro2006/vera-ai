@@ -17,12 +17,12 @@ interface HistorySparklinesProps {
 }
 
 const BEHAVIORS = [
-  { key: 'moving' as const, label: 'Moving', color: '#5088C5' },
-  { key: 'resting' as const, label: 'Resting', color: '#9B7EC8' },
-  { key: 'eating' as const, label: 'Eating', color: '#D4982C' },
+  { key: 'moving' as const, label: 'Moving', color: '#3B82F6' },
+  { key: 'resting' as const, label: 'Resting', color: '#A78BFA' },
+  { key: 'eating' as const, label: 'Eating', color: '#D97706' },
 ] as const;
 
-const ANOMALY_COLOR = '#CC4444';
+const ANOMALY_COLOR = '#F43F5E';
 
 function CustomTooltip({
   active,
@@ -35,7 +35,7 @@ function CustomTooltip({
 }) {
   if (!active || !payload || !payload.length) return null;
   return (
-    <div className="bg-surface border border-border rounded px-2 py-1 text-xs shadow-sm">
+    <div className="bg-white border border-border rounded px-2 py-1 text-xs shadow-sm">
       <p>{label}</p>
       <p className="font-medium">{payload[0].value}%</p>
     </div>

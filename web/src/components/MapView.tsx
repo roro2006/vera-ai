@@ -1,19 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Map, { NavigationControl } from 'react-map-gl/maplibre';
-import 'maplibre-gl/dist/maplibre-gl.css';
+import Map, { NavigationControl } from 'react-map-gl/mapbox';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { useApp } from '@/context/AppContext';
 import EnclosureLayer from '@/components/map/EnclosureLayer';
 import AnimalMarkers from '@/components/map/AnimalMarkers';
 import ThresholdLegend from '@/components/map/ThresholdLegend';
 
-const MAPTILER_KEY = process.env.NEXT_PUBLIC_MAPTILER_KEY;
-
-const MAP_STYLES = {
-  light: `https://api.maptiler.com/maps/dataviz-light/style.json?key=${MAPTILER_KEY}`,
-  dark: `https://api.maptiler.com/maps/dataviz-dark/style.json?key=${MAPTILER_KEY}`,
-};
+const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
 export default function MapView() {
   const { state } = useApp();
@@ -24,14 +19,6 @@ export default function MapView() {
     const timeout = setTimeout(() => setMounted(true), 10);
     return () => clearTimeout(timeout);
   }, []);
-
-  if (!MAPTILER_KEY) {
-    return (
-      <div className="relative flex-1 flex items-center justify-center bg-surface text-secondary text-sm">
-        Map unavailable: set <code className="mx-1 px-1 bg-border rounded">NEXT_PUBLIC_MAPTILER_KEY</code> in <code className="mx-1 px-1 bg-border rounded">.env.local</code>
-      </div>
-    );
-  }
 
   return (
     <div
@@ -45,14 +32,14 @@ export default function MapView() {
     >
       <ThresholdLegend />
       <Map
-        key={state.theme}
+        mapboxAccessToken={MAPBOX_TOKEN}
         initialViewState={{
           latitude: 40.156,
           longitude: -83.118,
           zoom: 16,
         }}
         style={{ width: '100%', height: '100%' }}
-        mapStyle={MAP_STYLES[state.theme]}
+        mapStyle="mapbox://styles/mapbox/light-v11"
         cooperativeGestures
       >
         <NavigationControl position="bottom-right" />

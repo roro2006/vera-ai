@@ -6,28 +6,23 @@ import type { Animal } from '../types';
 interface AppState {
   selectedAnimal: Animal | null;
   panelOpen: boolean;
-  theme: 'light' | 'dark';
 }
 
 type Action =
   | { type: 'SELECT_ANIMAL'; animal: Animal }
-  | { type: 'CLOSE_PANEL' }
-  | { type: 'TOGGLE_THEME' };
+  | { type: 'CLOSE_PANEL' };
 
 const initialState: AppState = {
   selectedAnimal: null,
   panelOpen: false,
-  theme: 'light',
 };
 
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
     case 'SELECT_ANIMAL':
-      return { ...state, selectedAnimal: action.animal, panelOpen: true };
+      return { selectedAnimal: action.animal, panelOpen: true };
     case 'CLOSE_PANEL':
-      return { ...state, selectedAnimal: null, panelOpen: false };
-    case 'TOGGLE_THEME':
-      return { ...state, theme: state.theme === 'light' ? 'dark' : 'light' };
+      return { selectedAnimal: null, panelOpen: false };
     default:
       return state;
   }

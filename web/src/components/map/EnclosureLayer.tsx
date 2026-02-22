@@ -1,103 +1,86 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { Source, Layer, Marker } from 'react-map-gl/maplibre';
+import { Source, Layer, Marker } from 'react-map-gl/mapbox';
 import { enclosures } from '@/data/enclosures';
 import { animals } from '@/data/animals';
-import { useApp } from '@/context/AppContext';
 import EnclosureWarningBadge from './EnclosureWarningBadge';
-import type { FeatureCollection, Point } from 'geojson';
-import type { HealthStatus } from '@/types';
-
-const STATUS_PRIORITY: Record<HealthStatus, number> = {
-  alert:        3,
-  mild_concern: 2,
-  healthy:      1,
-  offline:      0,
-};
+import type { FeatureCollection, Polygon } from 'geojson';
 
 export default function EnclosureLayer() {
-  const { state } = useApp();
-  const dark = state.theme === 'dark';
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
+    // Staggered fade-in after map load
     const timeout = setTimeout(() => setVisible(true), 400);
     return () => clearTimeout(timeout);
   }, []);
 
-  // Compute worst-case status per enclosure across all animals
-  const enclosureStatusMap = useMemo(() => {
-    const map = new Map<string, HealthStatus>();
-    for (const animal of animals) {
-      const current = map.get(animal.enclosureId);
-      const currentPriority = current !== undefined ? STATUS_PRIORITY[current] : -1;
-      if (STATUS_PRIORITY[animal.status] > currentPriority) {
-        map.set(animal.enclosureId, animal.status);
-      }
-    }
-    return map;
-  }, []);
-
+  // Determine which enclosures contain alert-status animals
   const alertEnclosureIds = useMemo(() => {
     const ids = new Set<string>();
-    for (const [id, status] of enclosureStatusMap) {
-      if (status === 'alert') ids.add(id);
+    for (const animal of animals) {
+      if (animal.status === 'alert') {
+        ids.add(animal.enclosureId);
+      }
     }
     return ids;
-  }, [enclosureStatusMap]);
+  }, []);
 
-  const geojson: FeatureCollection<Point> = useMemo(() => ({
+  // Build GeoJSON FeatureCollection with id property on each feature
+  const geojson: FeatureCollection<Polygon> = useMemo(() => ({
     type: 'FeatureCollection',
     features: enclosures.map((enc) => ({
       type: 'Feature' as const,
       properties: {
         id: enc.id,
         name: enc.name,
-        status: enclosureStatusMap.get(enc.id) ?? 'offline',
+        hasAlert: alertEnclosureIds.has(enc.id),
       },
-      geometry: {
-        type: 'Point',
-        coordinates: [enc.labelPosition.lng, enc.labelPosition.lat],
-      },
+      geometry: enc.polygon.geometry,
     })),
-  }), [enclosureStatusMap]);
+  }), [alertEnclosureIds]);
 
-  // Theme-dependent opacity for enclosure fills (slightly higher on dark for visibility)
-  const fillAlpha = dark ? 0.18 : 0.12;
+  // Build Mapbox match expressions for conditional styling based on alert status
+  const alertIds = Array.from(alertEnclosureIds);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const fillColorExpr: any = [
+    'match',
+    ['get', 'id'],
+    ...alertIds.flatMap((id) => [id, 'rgba(244,63,94,0.03)']),
+    '#F5F5F5',
+  ];
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const lineColorExpr: any = [
+    'match',
+    ['get', 'id'],
+    ...alertIds.flatMap((id) => [id, '#F43F5E']),
+    '#E0E0E0',
+  ];
 
   return (
     <>
       <Source id="enclosures" type="geojson" data={geojson}>
         <Layer
-          id="enclosure-circle"
-          type="circle"
+          id="enclosure-fill"
+          type="fill"
           paint={{
-            'circle-color': [
-              'match', ['get', 'status'],
-              'alert',        `rgba(204,68,68,${fillAlpha})`,
-              'mild_concern', `rgba(212,152,44,${fillAlpha})`,
-              'healthy',      `rgba(78,154,61,${fillAlpha})`,
-              /* offline */   dark ? 'rgba(50,50,42,0.40)' : 'rgba(173,165,146,0.50)',
-            ],
-            'circle-opacity': visible ? 1 : 0,
-            'circle-opacity-transition': { duration: 800, delay: 200 },
-            'circle-radius': [
-              'interpolate', ['linear'], ['zoom'],
-              14, 30,
-              16, 70,
-              18, 180,
-            ],
-            'circle-stroke-width': 1.5,
-            'circle-stroke-color': [
-              'match', ['get', 'status'],
-              'alert',        '#CC4444',
-              'mild_concern', '#D4982C',
-              'healthy',      '#4E9A3D',
-              /* offline */   dark ? '#3A3A30' : '#D0D0D0',
-            ],
-            'circle-stroke-opacity': visible ? 1 : 0,
-            'circle-stroke-opacity-transition': { duration: 800, delay: 400 },
+            'fill-color': fillColorExpr,
+            'fill-opacity': visible ? 0.6 : 0,
+            'fill-opacity-transition': { duration: 800, delay: 200 },
+          }}
+        />
+        <Layer
+          id="enclosure-line"
+          type="line"
+          paint={{
+            'line-color': lineColorExpr,
+            'line-width': 1.5,
+            'line-dasharray': [4, 2],
+            'line-opacity': visible ? 1 : 0,
+            'line-opacity-transition': { duration: 800, delay: 400 },
           }}
         />
       </Source>
@@ -109,18 +92,10 @@ export default function EnclosureLayer() {
           longitude={enc.labelPosition.lng}
           anchor="center"
         >
-          <div className={`backdrop-blur-sm px-2 py-0.5 rounded-md ${
-            dark
-              ? 'bg-[#1C221A]/80'
-              : 'bg-[#FEFBF3]/80'
-          }`}>
+          <div className="backdrop-blur-sm bg-white/70 px-2 py-0.5 rounded-md">
             <span
-              className="font-medium"
-              style={{
-                fontFamily: 'var(--font-outfit), Outfit, sans-serif',
-                fontSize: '13px',
-                color: dark ? '#8B9A7A' : '#7B8968',
-              }}
+              className="text-secondary font-medium"
+              style={{ fontFamily: 'Inter, sans-serif', fontSize: '11px' }}
             >
               {enc.name}
             </span>

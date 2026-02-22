@@ -20,7 +20,7 @@ export const enclosures: Enclosure[] = [
         ],
       },
     },
-    labelPosition: { lat: 40.1574, lng: -83.1188 },
+    labelPosition: { lat: 40.1574, lng: -83.1185 },
   },
   {
     id: 'heart-of-africa',
@@ -33,15 +33,15 @@ export const enclosures: Enclosure[] = [
         coordinates: [
           [
             [-83.1180, 40.1566],
-            [-83.1158, 40.1565],
+            [-83.1158, 40.1566],
             [-83.1158, 40.1553],
             [-83.1180, 40.1553],
-            [-83.1180, 40.1555],
+            [-83.1180, 40.1566],
           ],
         ],
       },
     },
-    labelPosition: { lat: 40.1562, lng: -83.1177 },
+    labelPosition: { lat: 40.15595, lng: -83.1169 },
   },
   {
     id: 'asia-quest',
@@ -83,7 +83,7 @@ export const enclosures: Enclosure[] = [
         ],
       },
     },
-    labelPosition: { lat: 40.1566, lng: -83.1225 },
+    labelPosition: { lat: 40.1566, lng: -83.1213 },
   },
   {
     id: 'shores-aquarium',
@@ -104,6 +104,6 @@ export const enclosures: Enclosure[] = [
         ],
       },
     },
-    labelPosition: { lat: 40.1545, lng: -83.118 },
+    labelPosition: { lat: 40.1544, lng: -83.1156 },
   },
 ];

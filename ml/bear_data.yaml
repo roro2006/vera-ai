@@ -1,7 +1,0 @@
-path: /Users/adamkhadre/polar/datasets/nuremberg
-train: images/train
-val: images/val
-
-names:
-  0: Nanuq
-  1: Vera
