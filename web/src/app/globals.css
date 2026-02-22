@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@import "../styles/dot-pulse.css";
+
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  --color-surface: #FAFAFA;
+  --color-border: #E5E5E5;
+  --color-primary: #1A1A1A;
+  --color-secondary: #6B6B6B;
+  --color-healthy: #2DD4BF;
+  --color-mild-concern: #D97706;
+  --color-alert: #F43F5E;
+  --color-offline: #D4D4D4;
+  --color-behavior-moving: #3B82F6;
+  --color-behavior-resting: #A78BFA;
+  --color-behavior-eating: #D97706;
+  --animate-breathe: breathe 4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}

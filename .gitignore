@@ -1,0 +1,8 @@
+# docs
+docs/
+
+# OS
+.DS_Store
+
+# env files
+.env*
