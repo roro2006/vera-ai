@@ -4,9 +4,9 @@
 
 **Goal:** Build a single-page React app showing a Mapbox map of the Columbus Zoo with interactive animal health status dots and a slide-in detail panel.
 
-**Architecture:** Vite + React + TypeScript SPA. State managed via React context + useReducer (selected animal, panel open/closed). Map rendered with react-map-gl. All data mocked locally — no backend. Component tree: App → TopBar + MapView + DetailPanel + BottomStatusBar + CameraModal.
+**Architecture:** Next.js App Router SPA (single page, client-side only — no SSR needed). State managed via React context + useReducer (selected animal, panel open/closed). Map rendered with react-map-gl. All data mocked locally — no backend. Component tree: RootLayout → Page (TopBar + MapView + DetailPanel + BottomStatusBar + CameraModal).
 
-**Tech Stack:** Vite, React 18, TypeScript, Tailwind CSS, react-map-gl, Mapbox GL JS, Recharts, Framer Motion, Lucide React
+**Tech Stack:** Next.js 15, React 19, TypeScript, Tailwind CSS, react-map-gl, Mapbox GL JS, Recharts, Framer Motion, Lucide React
 
 **Design doc:** `docs/plans/2026-02-21-zoo-tracker-frontend-design.md`
 
@@ -15,13 +15,13 @@
 ### Task 1: Scaffold Project
 
 **Files:**
-- Create: `package.json`, `vite.config.ts`, `tsconfig.json`, `tailwind.config.ts`, `postcss.config.js`, `index.html`, `src/main.tsx`, `src/App.tsx`, `src/index.css`
+- Create: `package.json`, `next.config.ts`, `tsconfig.json`, `src/app/layout.tsx`, `src/app/page.tsx`, `src/app/globals.css`
 
-**Step 1: Create Vite project**
+**Step 1: Create Next.js project**
 
 Run:
 ```bash
-npm create vite@latest . -- --template react-ts
+npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --no-import-alias --turbopack
 ```
 
 Accept overwrite if prompted (repo only has docs/).
@@ -31,38 +31,14 @@ Accept overwrite if prompted (repo only has docs/).
 Run:
 ```bash
 npm install react-map-gl mapbox-gl recharts framer-motion lucide-react
-npm install -D tailwindcss @tailwindcss/vite
 ```
 
-**Step 3: Configure Tailwind**
+**Step 3: Configure design tokens**
 
-Replace `src/index.css` with:
+In `src/app/globals.css`, keep the Tailwind imports and add the theme tokens:
 ```css
 @import "tailwindcss";
-```
 
-Update `vite.config.ts`:
-```ts
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
-})
-```
-
-**Step 4: Set up Inter font**
-
-In `index.html`, add to `<head>`:
-```html
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-```
-
-In `src/index.css`, add after the import:
-```css
 @theme {
   --font-sans: 'Inter', sans-serif;
   --color-surface: #FAFAFA;
@@ -79,31 +55,62 @@ In `src/index.css`, add after the import:
 }
 ```
 
-**Step 5: Verify it runs**
+**Step 4: Set up Inter font**
 
-Run: `npm run dev`
-Expected: Vite dev server starts, page loads with default React content.
-
-**Step 6: Clean up default files**
-
-- Delete `src/App.css`, `src/assets/` folder
-- Replace `src/App.tsx` with a minimal shell:
-
+In `src/app/layout.tsx`, use `next/font/google` for optimized font loading:
 ```tsx
-export default function App() {
-  return <div className="relative h-screen w-screen bg-white font-sans text-primary">
-    {/* Noise texture overlay for analog warmth */}
-    <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.02]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%270 0 256 256%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27noise%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23noise)%27/%3E%3C/svg%3E")' }} />
-    Polar
-  </div>
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+
+const inter = Inter({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
+
+export const metadata: Metadata = {
+  title: 'Polar — Zoo Animal Behavior Tracker',
+  description: 'Real-time behavioral monitoring for the Columbus Zoo',
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
+    </html>
+  );
 }
 ```
 
-**Step 7: Commit**
+**Step 5: Set up page shell**
+
+Replace `src/app/page.tsx` with:
+```tsx
+'use client';
+
+export default function Home() {
+  return (
+    <div className="relative h-screen w-screen bg-white text-primary">
+      {/* Noise texture overlay for analog warmth */}
+      <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.02]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%270 0 256 256%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27noise%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23noise)%27/%3E%3C/svg%3E")' }} />
+      Polar
+    </div>
+  );
+}
+```
+
+**Step 6: Verify it runs**
+
+Run: `npm run dev`
+Expected: Next.js dev server starts, page loads with "Polar" text.
+
+**Step 7: Clean up default files**
+
+- Delete any default Next.js boilerplate files not needed (e.g., `public/next.svg`, `public/vercel.svg`, `src/app/favicon.ico` can stay)
+- Remove default page styles from `globals.css` if any remain
+
+**Step 8: Commit**
 
 ```bash
 git add -A
-git commit -m "feat: scaffold vite + react + tailwind project"
+git commit -m "feat: scaffold next.js project with tailwind"
 ```
 
 ---
@@ -209,12 +216,14 @@ git commit -m "feat: add typescript types and mock animal/enclosure data"
 
 **Files:**
 - Create: `src/context/AppContext.tsx`
-- Modify: `src/App.tsx`
+- Modify: `src/app/page.tsx`
 
 **Step 1: Create context with useReducer**
 
 Create `src/context/AppContext.tsx`:
 ```tsx
+'use client';
+
 import { createContext, useContext, useReducer, type ReactNode } from 'react';
 import type { Animal } from '../types';
 
@@ -264,16 +273,19 @@ export function useApp() {
 }
 ```
 
-**Step 2: Wrap App in provider**
+**Step 2: Wrap page in provider**
 
-Update `src/App.tsx`:
+Update `src/app/page.tsx`:
 ```tsx
-import { AppProvider } from './context/AppContext';
+'use client';
 
-export default function App() {
+import { AppProvider } from '../context/AppContext';
+
+export default function Home() {
   return (
     <AppProvider>
-      <div className="flex h-screen w-screen flex-col bg-white font-sans text-primary">
+      <div className="relative flex h-screen w-screen flex-col bg-white text-primary">
+        <div className="pointer-events-none fixed inset-0 z-50 opacity-[0.02]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%270 0 256 256%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27noise%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%274%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23noise)%27/%3E%3C/svg%3E")' }} />
         {/* TopBar, MapView, DetailPanel, BottomStatusBar go here */}
         <p className="p-4">Polar — Zoo Animal Behavior Tracker</p>
       </div>
@@ -285,7 +297,7 @@ export default function App() {
 **Step 3: Commit**
 
 ```bash
-git add src/context/ src/App.tsx
+git add src/context/ src/app/page.tsx
 git commit -m "feat: add app state context with useReducer"
 ```
 
@@ -295,11 +307,11 @@ git commit -m "feat: add app state context with useReducer"
 
 **Files:**
 - Create: `src/components/TopBar.tsx`
-- Modify: `src/App.tsx`
+- Modify: `src/app/page.tsx`
 
 **Step 1: Build TopBar component**
 
-Create `src/components/TopBar.tsx`:
+Create `src/components/TopBar.tsx` (all components in `src/components/` need `'use client'` at the top since they use browser APIs, state, or event handlers):
 - 56px height, white bg, bottom border `#E5E5E5`
 - Left: geometric polar bear SVG mark (minimal: head circle, two ear triangles, nose dot — all `#1A1A1A` monochrome, ~24px) with CSS breathing animation (`translateY` oscillating 2px over 4s ease-in-out infinite) + "Polar" text in Inter 600 18px
 - Right: "Columbus Zoo" text + red 8px dot + "Camera Feed" label in secondary text
@@ -307,7 +319,7 @@ Create `src/components/TopBar.tsx`:
 
 **Step 2: Add to App**
 
-Import TopBar into App.tsx and render it at the top of the flex column.
+Import TopBar into page.tsx and render it at the top of the flex column.
 
 **Step 3: Verify visually**
 
@@ -317,7 +329,7 @@ Expected: Top bar visible with logo, title, and status indicator.
 **Step 4: Commit**
 
 ```bash
-git add src/components/TopBar.tsx src/App.tsx
+git add src/components/TopBar.tsx src/app/page.tsx
 git commit -m "feat: add top bar with logo and status indicator"
 ```
 
@@ -327,16 +339,16 @@ git commit -m "feat: add top bar with logo and status indicator"
 
 **Files:**
 - Create: `src/components/MapView.tsx`, `src/components/map/EnclosureLayer.tsx`
-- Modify: `src/App.tsx`
+- Modify: `src/app/page.tsx`
 
 **Step 1: Set up Mapbox token**
 
-Create `.env` file:
+Create `.env.local` file:
 ```
-VITE_MAPBOX_TOKEN=your_token_here
+NEXT_PUBLIC_MAPBOX_TOKEN=your_token_here
 ```
 
-Add `.env` to `.gitignore`.
+Next.js auto-ignores `.env.local` from git (already in default `.gitignore`).
 
 **Step 2: Build MapView component**
 
@@ -364,7 +376,7 @@ Create `src/components/map/EnclosureLayer.tsx`:
 
 **Step 4: Add to App layout**
 
-Update App.tsx: render MapView in the main content area (flex-1 to fill available space).
+Update page.tsx: render MapView in the main content area (flex-1 to fill available space).
 
 **Step 5: Verify**
 
@@ -374,7 +386,7 @@ Expected: Map renders centered on Columbus Zoo with enclosure polygons visible.
 **Step 6: Commit**
 
 ```bash
-git add src/components/MapView.tsx src/components/map/ src/App.tsx .env .gitignore
+git add src/components/MapView.tsx src/components/map/ src/app/page.tsx
 git commit -m "feat: add mapbox map with enclosure polygon layers"
 ```
 
@@ -395,7 +407,7 @@ Create `src/styles/dot-pulse.css` with keyframes:
 - `.dot-pulse-offline`: no animation (static)
 - `.dot-selected`: no pulse, double ring via box-shadow (`0 0 0 2px white, 0 0 0 4px var(--ring-color)`)
 
-Import this CSS file in `src/main.tsx`.
+Import this CSS file in `src/app/globals.css` (via `@import`) or in `src/app/layout.tsx`.
 
 **Step 2: Build AnimalDot component**
 
@@ -430,7 +442,7 @@ Expected: Colored dots visible on map at animal positions. Hovering shows toolti
 **Step 6: Commit**
 
 ```bash
-git add src/components/map/AnimalDot.tsx src/components/map/AnimalMarkers.tsx src/styles/ src/components/MapView.tsx src/main.tsx
+git add src/components/map/AnimalDot.tsx src/components/map/AnimalMarkers.tsx src/styles/ src/components/MapView.tsx src/app/globals.css
 git commit -m "feat: add animal dot markers with pulse animations and hover tooltips"
 ```
 
@@ -440,7 +452,7 @@ git commit -m "feat: add animal dot markers with pulse animations and hover tool
 
 **Files:**
 - Create: `src/components/DetailPanel.tsx`
-- Modify: `src/App.tsx`
+- Modify: `src/app/page.tsx`
 
 **Step 1: Build DetailPanel with Framer Motion**
 
@@ -456,7 +468,7 @@ Create `src/components/DetailPanel.tsx`:
 
 **Step 2: Add to App layout**
 
-Update App.tsx layout to be a flex row for the main content area:
+Update page.tsx layout to be a flex row for the main content area:
 ```tsx
 <div className="flex flex-1 overflow-hidden">
   <MapView />
@@ -474,7 +486,7 @@ Expected: Clicking a dot slides in the panel from the right. Map dims slightly. 
 **Step 4: Commit**
 
 ```bash
-git add src/components/DetailPanel.tsx src/App.tsx
+git add src/components/DetailPanel.tsx src/app/page.tsx
 git commit -m "feat: add slide-in detail panel with framer motion"
 ```
 
@@ -599,7 +611,7 @@ git commit -m "feat: add alert feed with stagger animation"
 
 **Files:**
 - Create: `src/components/CameraModal.tsx`
-- Modify: `src/App.tsx`, `src/components/DetailPanel.tsx`
+- Modify: `src/app/page.tsx`, `src/components/DetailPanel.tsx`
 
 **Step 1: Build CameraModal**
 
@@ -629,7 +641,7 @@ git commit -m "feat: add camera lightbox modal"
 
 **Files:**
 - Create: `src/components/BottomStatusBar.tsx`
-- Modify: `src/App.tsx`
+- Modify: `src/app/page.tsx`
 
 **Step 1: Build BottomStatusBar**
 
@@ -649,7 +661,7 @@ Render BottomStatusBar below the main content flex row.
 **Step 3: Commit**
 
 ```bash
-git add src/components/BottomStatusBar.tsx src/App.tsx
+git add src/components/BottomStatusBar.tsx src/app/page.tsx
 git commit -m "feat: add bottom status bar with live counter"
 ```
 
@@ -718,7 +730,7 @@ git commit -m "feat: add warning badges on alert enclosures"
 ### Task 15: Responsive Layout
 
 **Files:**
-- Modify: `src/App.tsx`, `src/components/DetailPanel.tsx`, `src/components/map/AnimalDot.tsx`
+- Modify: `src/app/page.tsx`, `src/components/DetailPanel.tsx`, `src/components/map/AnimalDot.tsx`
 
 **Step 1: Mobile detail panel**
 
@@ -740,7 +752,7 @@ Test at desktop width (>1024px) and mobile width (≤1024px) using browser devto
 **Step 4: Commit**
 
 ```bash
-git add src/App.tsx src/components/DetailPanel.tsx src/components/map/AnimalDot.tsx
+git add src/app/page.tsx src/components/DetailPanel.tsx src/components/map/AnimalDot.tsx
 git commit -m "feat: add responsive layout for mobile/tablet"
 ```
 

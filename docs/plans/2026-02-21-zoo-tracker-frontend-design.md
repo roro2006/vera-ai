@@ -22,7 +22,7 @@ Single-page React app displaying a top-down Mapbox map of the Columbus Zoo with 
 
 ## Tech Stack
 
-- **Framework:** React (Vite)
+- **Framework:** Next.js (App Router)
 - **Map:** react-map-gl (Mapbox GL JS) with custom Monochrome white style
 - **Charts:** Recharts (sparklines only)
 - **Animations:** Framer Motion (panel transitions, staggers), CSS keyframes (dot pulses)
