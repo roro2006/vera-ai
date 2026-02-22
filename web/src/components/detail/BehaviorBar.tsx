@@ -29,7 +29,7 @@ export default function BehaviorBar({ behaviorToday }: BehaviorBarProps) {
 
       {/* Stacked bar */}
       <div className="px-4">
-        <div className="flex h-2 rounded-full overflow-hidden bg-gray-100">
+        <div className="flex h-2 rounded-full overflow-hidden bg-border">
           {BEHAVIORS.map((b, i) => {
             const percent = total > 0 ? (behaviorToday[b.key] / total) * 100 : 0;
             return (

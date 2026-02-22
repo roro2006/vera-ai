@@ -25,3 +25,10 @@
     transform: translateY(-2px);
   }
 }
+
+[data-theme="dark"] {
+  --color-surface: #141414;
+  --color-border: #2A2A2A;
+  --color-primary: #EBEBEB;
+  --color-secondary: #888888;
+}
