@@ -1,12 +1,12 @@
 'use client';
 
-import { AppProvider } from '../../context/AppContext';
-import TopBar from '../../components/TopBar';
-import MapView from '../../components/MapView';
-import DetailPanel from '../../components/DetailPanel';
-import BottomStatusBar from '../../components/BottomStatusBar';
+import { AppProvider } from '../context/AppContext';
+import TopBar from '../components/TopBar';
+import MapView from '../components/MapView';
+import DetailPanel from '../components/DetailPanel';
+import BottomStatusBar from '../components/BottomStatusBar';
 
-export default function Dashboard() {
+export default function Home() {
   return (
     <AppProvider>
       <div className="relative flex h-screen w-screen flex-col bg-white text-primary">
