@@ -11,7 +11,7 @@ export const animals: Animal[] = [
     enclosureId: 'polar-frontier',
     behaviorToday: { moving: 45, resting: 35, eating: 20 },
     currentState: 'moving',
-    cameraFrameUrl: null,
+    cameraFrameUrl: 'https://placehold.co/640x360/f5f5f5/6b6b6b?text=Camera+Feed',
     alerts: [],
     history7d: [
       { date: '2026-02-15', moving: 42, resting: 38, eating: 20 },
@@ -32,7 +32,7 @@ export const animals: Animal[] = [
     enclosureId: 'polar-frontier',
     behaviorToday: { moving: 55, resting: 25, eating: 20 },
     currentState: 'moving',
-    cameraFrameUrl: null,
+    cameraFrameUrl: 'https://placehold.co/640x360/f5f5f5/6b6b6b?text=Camera+Feed',
     alerts: [],
     history7d: [
       { date: '2026-02-15', moving: 52, resting: 28, eating: 20 },
@@ -55,7 +55,7 @@ export const animals: Animal[] = [
     enclosureId: 'heart-of-africa',
     behaviorToday: { moving: 30, resting: 40, eating: 30 },
     currentState: 'eating',
-    cameraFrameUrl: null,
+    cameraFrameUrl: 'https://placehold.co/640x360/f5f5f5/6b6b6b?text=Camera+Feed',
     alerts: [],
     history7d: [
       { date: '2026-02-15', moving: 28, resting: 42, eating: 30 },
@@ -76,7 +76,7 @@ export const animals: Animal[] = [
     enclosureId: 'heart-of-africa',
     behaviorToday: { moving: 15, resting: 70, eating: 15 },
     currentState: 'resting',
-    cameraFrameUrl: null,
+    cameraFrameUrl: 'https://placehold.co/640x360/f5f5f5/6b6b6b?text=Camera+Feed',
     alerts: [
       {
         timestamp: '2026-02-21T09:15:00Z',
@@ -103,7 +103,7 @@ export const animals: Animal[] = [
     enclosureId: 'heart-of-africa',
     behaviorToday: { moving: 60, resting: 25, eating: 15 },
     currentState: 'moving',
-    cameraFrameUrl: null,
+    cameraFrameUrl: 'https://placehold.co/640x360/f5f5f5/6b6b6b?text=Camera+Feed',
     alerts: [],
     history7d: [
       { date: '2026-02-15', moving: 58, resting: 27, eating: 15 },
@@ -126,7 +126,7 @@ export const animals: Animal[] = [
     enclosureId: 'asia-quest',
     behaviorToday: { moving: 35, resting: 45, eating: 20 },
     currentState: 'resting',
-    cameraFrameUrl: null,
+    cameraFrameUrl: 'https://placehold.co/640x360/f5f5f5/6b6b6b?text=Camera+Feed',
     alerts: [],
     history7d: [
       { date: '2026-02-15', moving: 33, resting: 47, eating: 20 },
@@ -147,7 +147,7 @@ export const animals: Animal[] = [
     enclosureId: 'asia-quest',
     behaviorToday: { moving: 8, resting: 85, eating: 7 },
     currentState: 'resting',
-    cameraFrameUrl: null,
+    cameraFrameUrl: 'https://placehold.co/640x360/f5f5f5/6b6b6b?text=Camera+Feed',
     alerts: [
       {
         timestamp: '2026-02-21T06:30:00Z',
@@ -184,7 +184,7 @@ export const animals: Animal[] = [
     enclosureId: 'asia-quest',
     behaviorToday: { moving: 50, resting: 30, eating: 20 },
     currentState: 'moving',
-    cameraFrameUrl: null,
+    cameraFrameUrl: 'https://placehold.co/640x360/f5f5f5/6b6b6b?text=Camera+Feed',
     alerts: [],
     history7d: [
       { date: '2026-02-15', moving: 48, resting: 32, eating: 20 },
@@ -207,7 +207,7 @@ export const animals: Animal[] = [
     enclosureId: 'north-america',
     behaviorToday: { moving: 40, resting: 35, eating: 25 },
     currentState: 'eating',
-    cameraFrameUrl: null,
+    cameraFrameUrl: 'https://placehold.co/640x360/f5f5f5/6b6b6b?text=Camera+Feed',
     alerts: [],
     history7d: [
       { date: '2026-02-15', moving: 38, resting: 37, eating: 25 },
@@ -257,7 +257,7 @@ export const animals: Animal[] = [
     enclosureId: 'shores-aquarium',
     behaviorToday: { moving: 55, resting: 20, eating: 25 },
     currentState: 'moving',
-    cameraFrameUrl: null,
+    cameraFrameUrl: 'https://placehold.co/640x360/f5f5f5/6b6b6b?text=Camera+Feed',
     alerts: [],
     history7d: [
       { date: '2026-02-15', moving: 53, resting: 22, eating: 25 },
