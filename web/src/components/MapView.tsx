@@ -1,14 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Map, { NavigationControl } from 'react-map-gl/mapbox';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import Map, { NavigationControl } from 'react-map-gl/maplibre';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import { useApp } from '@/context/AppContext';
 import EnclosureLayer from '@/components/map/EnclosureLayer';
 import AnimalMarkers from '@/components/map/AnimalMarkers';
 import ThresholdLegend from '@/components/map/ThresholdLegend';
 
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
+const MAPTILER_KEY = process.env.NEXT_PUBLIC_MAPTILER_KEY;
 
 export default function MapView() {
   const { state } = useApp();
@@ -32,14 +32,13 @@ export default function MapView() {
     >
       <ThresholdLegend />
       <Map
-        mapboxAccessToken={MAPBOX_TOKEN}
         initialViewState={{
           latitude: 40.156,
           longitude: -83.118,
           zoom: 16,
         }}
         style={{ width: '100%', height: '100%' }}
-        mapStyle="mapbox://styles/mapbox/light-v11"
+        mapStyle={`https://api.maptiler.com/maps/dataviz-light/style.json?key=${MAPTILER_KEY}`}
         cooperativeGestures
       >
         <NavigationControl position="bottom-right" />
