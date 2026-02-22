@@ -7,6 +7,7 @@ import PanelHeader from '@/components/detail/PanelHeader';
 import CameraFeed from '@/components/detail/CameraFeed';
 import BehaviorBar from '@/components/detail/BehaviorBar';
 import HistorySparklines from '@/components/detail/HistorySparklines';
+import AlertFeed from '@/components/detail/AlertFeed';
 
 export default function DetailPanel() {
   const { state, dispatch } = useApp();
@@ -34,6 +35,7 @@ export default function DetailPanel() {
           <CameraFeed animal={state.selectedAnimal} onExpand={() => {}} />
           <BehaviorBar behaviorToday={state.selectedAnimal.behaviorToday} />
           <HistorySparklines history7d={state.selectedAnimal.history7d} behaviorToday={state.selectedAnimal.behaviorToday} />
+          <AlertFeed alerts={state.selectedAnimal.alerts} />
         </motion.div>
       )}
     </AnimatePresence>
