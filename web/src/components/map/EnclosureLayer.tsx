@@ -79,9 +79,9 @@ export default function EnclosureLayer() {
             'circle-opacity-transition': { duration: 800, delay: 200 },
             'circle-radius': [
               'interpolate', ['linear'], ['zoom'],
-              14, 40,
-              16, 65,
-              18, 90,
+              14, 30,
+              16, 70,
+              18, 180,
             ],
             'circle-stroke-width': 1.5,
             'circle-stroke-color': [
@@ -107,7 +107,7 @@ export default function EnclosureLayer() {
           <div className="backdrop-blur-sm bg-white/70 px-2 py-0.5 rounded-md">
             <span
               className="text-secondary font-medium"
-              style={{ fontFamily: 'Inter, sans-serif', fontSize: '11px' }}
+              style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px' }}
             >
               {enc.name}
             </span>

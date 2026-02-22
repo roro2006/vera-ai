@@ -5,7 +5,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'], weight: ['400', '500', '600', '700'] });
 
 export const metadata: Metadata = {
-  title: 'Polar — Zoo Animal Behavior Tracker',
+  title: 'Vera — Zoo Animal Behavior Tracker',
   description: 'Real-time behavioral monitoring for the Columbus Zoo',
 };
 
