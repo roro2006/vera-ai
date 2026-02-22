@@ -6,28 +6,45 @@ import { enclosures } from '@/data/enclosures';
 import { animals } from '@/data/animals';
 import EnclosureWarningBadge from './EnclosureWarningBadge';
 import type { FeatureCollection, Point } from 'geojson';
+import type { HealthStatus } from '@/types';
+
+const STATUS_PRIORITY: Record<HealthStatus, number> = {
+  alert:        3,
+  mild_concern: 2,
+  healthy:      1,
+  offline:      0,
+};
 
 export default function EnclosureLayer() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Staggered fade-in after map load
     const timeout = setTimeout(() => setVisible(true), 400);
     return () => clearTimeout(timeout);
   }, []);
 
-  // Determine which enclosures contain alert-status animals
-  const alertEnclosureIds = useMemo(() => {
-    const ids = new Set<string>();
+  // Compute worst-case status per enclosure across all its animals
+  const enclosureStatusMap = useMemo(() => {
+    const map = new Map<string, HealthStatus>();
     for (const animal of animals) {
-      if (animal.status === 'alert') {
-        ids.add(animal.enclosureId);
+      const current = map.get(animal.enclosureId);
+      const currentPriority = current !== undefined ? STATUS_PRIORITY[current] : -1;
+      if (STATUS_PRIORITY[animal.status] > currentPriority) {
+        map.set(animal.enclosureId, animal.status);
       }
     }
-    return ids;
+    return map;
   }, []);
 
-  // Build GeoJSON FeatureCollection using enclosure center points
+  const alertEnclosureIds = useMemo(() => {
+    const ids = new Set<string>();
+    for (const [id, status] of enclosureStatusMap) {
+      if (status === 'alert') ids.add(id);
+    }
+    return ids;
+  }, [enclosureStatusMap]);
+
+  // Embed status as a GeoJSON property so MapLibre match expressions can use it
   const geojson: FeatureCollection<Point> = useMemo(() => ({
     type: 'FeatureCollection',
     features: enclosures.map((enc) => ({
@@ -35,33 +52,14 @@ export default function EnclosureLayer() {
       properties: {
         id: enc.id,
         name: enc.name,
-        hasAlert: alertEnclosureIds.has(enc.id),
+        status: enclosureStatusMap.get(enc.id) ?? 'offline',
       },
       geometry: {
         type: 'Point',
         coordinates: [enc.labelPosition.lng, enc.labelPosition.lat],
       },
     })),
-  }), [alertEnclosureIds]);
-
-  // Build GL match expressions for conditional styling based on alert status
-  const alertIds = Array.from(alertEnclosureIds);
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const circleColorExpr: any = [
-    'match',
-    ['get', 'id'],
-    ...alertIds.flatMap((id) => [id, 'rgba(244,63,94,0.12)']),
-    'rgba(245,245,245,0.75)',
-  ];
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const strokeColorExpr: any = [
-    'match',
-    ['get', 'id'],
-    ...alertIds.flatMap((id) => [id, '#F43F5E']),
-    '#D0D0D0',
-  ];
+  }), [enclosureStatusMap]);
 
   return (
     <>
@@ -70,17 +68,29 @@ export default function EnclosureLayer() {
           id="enclosure-circle"
           type="circle"
           paint={{
-            'circle-color': circleColorExpr,
+            'circle-color': [
+              'match', ['get', 'status'],
+              'alert',        'rgba(244,63,94,0.12)',
+              'mild_concern', 'rgba(217,119,6,0.12)',
+              'healthy',      'rgba(45,212,191,0.12)',
+              /* offline */   'rgba(245,245,245,0.75)',
+            ],
             'circle-opacity': visible ? 1 : 0,
             'circle-opacity-transition': { duration: 800, delay: 200 },
             'circle-radius': [
               'interpolate', ['linear'], ['zoom'],
-              14, 16,
-              16, 36,
-              18, 72,
+              14, 40,
+              16, 65,
+              18, 90,
             ],
             'circle-stroke-width': 1.5,
-            'circle-stroke-color': strokeColorExpr,
+            'circle-stroke-color': [
+              'match', ['get', 'status'],
+              'alert',        '#F43F5E',
+              'mild_concern', '#D97706',
+              'healthy',      '#2DD4BF',
+              /* offline */   '#D0D0D0',
+            ],
             'circle-stroke-opacity': visible ? 1 : 0,
             'circle-stroke-opacity-transition': { duration: 800, delay: 400 },
           }}
