@@ -5,6 +5,8 @@ import { X } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import PanelHeader from '@/components/detail/PanelHeader';
 import CameraFeed from '@/components/detail/CameraFeed';
+import BehaviorBar from '@/components/detail/BehaviorBar';
+import HistorySparklines from '@/components/detail/HistorySparklines';
 
 export default function DetailPanel() {
   const { state, dispatch } = useApp();
@@ -30,6 +32,8 @@ export default function DetailPanel() {
 
           <PanelHeader animal={state.selectedAnimal} />
           <CameraFeed animal={state.selectedAnimal} onExpand={() => {}} />
+          <BehaviorBar behaviorToday={state.selectedAnimal.behaviorToday} />
+          <HistorySparklines history7d={state.selectedAnimal.history7d} behaviorToday={state.selectedAnimal.behaviorToday} />
         </motion.div>
       )}
     </AnimatePresence>
