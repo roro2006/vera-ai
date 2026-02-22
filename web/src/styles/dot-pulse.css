@@ -1,0 +1,57 @@
+/* ── Dot pulse animations for animal markers ── */
+
+@keyframes pulse-healthy {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.7;
+  }
+}
+
+@keyframes pulse-mild-concern {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.7;
+  }
+}
+
+@keyframes pulse-alert {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.6;
+  }
+}
+
+.dot-pulse-healthy {
+  animation: pulse-healthy 3s ease-in-out infinite;
+}
+
+.dot-pulse-mild-concern {
+  animation: pulse-mild-concern 3s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(212, 152, 44, 0.4);
+}
+
+.dot-pulse-alert {
+  animation: pulse-alert 1.5s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(204, 68, 68, 0.4);
+}
+
+.dot-pulse-offline {
+  /* No animation — static dot */
+}
+
+.dot-selected {
+  animation: none;
+  box-shadow: 0 0 0 2px white, 0 0 0 4px var(--ring-color);
+}
