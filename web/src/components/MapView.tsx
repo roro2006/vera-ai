@@ -10,6 +10,11 @@ import ThresholdLegend from '@/components/map/ThresholdLegend';
 
 const MAPTILER_KEY = process.env.NEXT_PUBLIC_MAPTILER_KEY;
 
+const MAP_STYLES = {
+  light: `https://api.maptiler.com/maps/dataviz-light/style.json?key=${MAPTILER_KEY}`,
+  dark: `https://api.maptiler.com/maps/dataviz-dark/style.json?key=${MAPTILER_KEY}`,
+};
+
 export default function MapView() {
   const { state } = useApp();
   const [mounted, setMounted] = useState(false);
@@ -22,8 +27,8 @@ export default function MapView() {
 
   if (!MAPTILER_KEY) {
     return (
-      <div className="relative flex-1 flex items-center justify-center bg-gray-100 text-gray-500 text-sm">
-        Map unavailable: set <code className="mx-1 px-1 bg-gray-200 rounded">NEXT_PUBLIC_MAPTILER_KEY</code> in <code className="mx-1 px-1 bg-gray-200 rounded">.env.local</code>
+      <div className="relative flex-1 flex items-center justify-center bg-surface text-secondary text-sm">
+        Map unavailable: set <code className="mx-1 px-1 bg-border rounded">NEXT_PUBLIC_MAPTILER_KEY</code> in <code className="mx-1 px-1 bg-border rounded">.env.local</code>
       </div>
     );
   }
@@ -40,13 +45,14 @@ export default function MapView() {
     >
       <ThresholdLegend />
       <Map
+        key={state.theme}
         initialViewState={{
           latitude: 40.156,
           longitude: -83.118,
           zoom: 16,
         }}
         style={{ width: '100%', height: '100%' }}
-        mapStyle={`https://api.maptiler.com/maps/dataviz-light/style.json?key=${MAPTILER_KEY}`}
+        mapStyle={MAP_STYLES[state.theme]}
         cooperativeGestures
       >
         <NavigationControl position="bottom-right" />

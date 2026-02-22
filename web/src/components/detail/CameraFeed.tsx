@@ -8,20 +8,53 @@ interface CameraFeedProps {
 }
 
 const STATE_PILLS: { key: BehaviorState; label: string; color: string }[] = [
-  { key: 'moving', label: 'Moving', color: '#3B82F6' },
-  { key: 'resting', label: 'Resting', color: '#A78BFA' },
-  { key: 'eating', label: 'Eating', color: '#D97706' },
+  { key: 'moving', label: 'Moving', color: '#5088C5' },
+  { key: 'resting', label: 'Resting', color: '#9B7EC8' },
+  { key: 'eating', label: 'Eating', color: '#D4982C' },
 ];
 
+/** Extract YouTube embed URL from various YT URL formats */
+function getYouTubeEmbedUrl(url: string): string | null {
+  try {
+    const parsed = new URL(url);
+    let videoId: string | null = null;
+
+    if (parsed.hostname.includes('youtube.com')) {
+      videoId = parsed.searchParams.get('v');
+    } else if (parsed.hostname === 'youtu.be') {
+      videoId = parsed.pathname.slice(1);
+    } else if (parsed.hostname.includes('youtube.com') && parsed.pathname.startsWith('/embed/')) {
+      return url; // already an embed URL
+    }
+
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}`;
+    }
+  } catch {
+    // not a valid URL
+  }
+  return null;
+}
+
 export default function CameraFeed({ animal, onExpand }: CameraFeedProps) {
+  const embedUrl = animal.videoUrl ? getYouTubeEmbedUrl(animal.videoUrl) : null;
+
   return (
     <div>
-      {/* Camera container */}
+      {/* Camera / Video container */}
       <div
-        className="mx-4 rounded-xl aspect-video bg-surface overflow-hidden relative cursor-pointer"
-        onClick={onExpand}
+        className="mx-4 rounded-xl aspect-video bg-surface overflow-hidden relative"
+        {...(!embedUrl ? { onClick: onExpand, style: { cursor: 'pointer' } } : {})}
       >
-        {animal.cameraFrameUrl ? (
+        {embedUrl ? (
+          <iframe
+            src={embedUrl}
+            title={`${animal.name} camera feed`}
+            className="w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        ) : animal.cameraFrameUrl ? (
           <img
             src={animal.cameraFrameUrl}
             alt={animal.name}
@@ -49,10 +82,10 @@ export default function CameraFeed({ animal, onExpand }: CameraFeedProps) {
         <div className="absolute top-2 left-2 flex items-center gap-1 bg-black/60 rounded-full px-2 py-0.5">
           <span
             className="inline-block w-1.5 h-1.5 rounded-full"
-            style={{ backgroundColor: '#F43F5E' }}
+            style={{ backgroundColor: embedUrl ? '#4E9A3D' : '#CC4444' }}
           />
           <span className="font-medium text-[10px] text-white">
-            Camera Feed
+            {embedUrl ? 'Live Feed' : 'Camera Feed'}
           </span>
         </div>
       </div>

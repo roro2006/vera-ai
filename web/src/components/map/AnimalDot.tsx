@@ -10,10 +10,10 @@ interface AnimalDotProps {
 }
 
 const STATUS_COLORS: Record<HealthStatus, string> = {
-  healthy: '#2DD4BF',
-  mild_concern: '#D97706',
-  alert: '#F43F5E',
-  offline: '#D4D4D4',
+  healthy: '#4E9A3D',
+  mild_concern: '#D4982C',
+  alert: '#CC4444',
+  offline: '#ADA592',
 };
 
 const STATUS_LABELS: Record<HealthStatus, string> = {
@@ -31,7 +31,8 @@ const PULSE_CLASSES: Record<HealthStatus, string> = {
 };
 
 export default function AnimalDot({ animal, isSelected }: AnimalDotProps) {
-  const { dispatch } = useApp();
+  const { state, dispatch } = useApp();
+  const dark = state.theme === 'dark';
   const [showTooltip, setShowTooltip] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -71,13 +72,14 @@ export default function AnimalDot({ animal, isSelected }: AnimalDotProps) {
           transform: 'translateX(-50%)',
           marginBottom: 8,
           whiteSpace: 'nowrap',
-          backgroundColor: '#fff',
-          color: '#1A1A1A',
+          backgroundColor: dark ? '#1C221A' : '#FEFBF3',
+          color: dark ? '#E5DFD0' : '#2C3B1F',
           fontSize: 12,
           lineHeight: '16px',
           padding: '4px 8px',
           borderRadius: 8,
-          boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
+          border: `1px solid ${dark ? '#2E3828' : '#D6CBB8'}`,
+          boxShadow: dark ? '0 2px 8px rgba(0,0,0,0.3)' : '0 1px 4px rgba(0,0,0,0.08)',
           zIndex: 50,
           pointerEvents: 'none',
           opacity: showTooltip ? 1 : 0,
@@ -96,7 +98,7 @@ export default function AnimalDot({ animal, isSelected }: AnimalDotProps) {
             height: 0,
             borderLeft: '4px solid transparent',
             borderRight: '4px solid transparent',
-            borderTop: '4px solid #fff',
+            borderTop: `4px solid ${dark ? '#1C221A' : '#FEFBF3'}`,
           }}
         />
       </div>

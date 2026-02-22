@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Source, Layer, Marker } from 'react-map-gl/maplibre';
 import { enclosures } from '@/data/enclosures';
 import { animals } from '@/data/animals';
+import { useApp } from '@/context/AppContext';
 import EnclosureWarningBadge from './EnclosureWarningBadge';
 import type { FeatureCollection, Point } from 'geojson';
 import type { HealthStatus } from '@/types';
@@ -16,6 +17,8 @@ const STATUS_PRIORITY: Record<HealthStatus, number> = {
 };
 
 export default function EnclosureLayer() {
+  const { state } = useApp();
+  const dark = state.theme === 'dark';
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -23,7 +26,7 @@ export default function EnclosureLayer() {
     return () => clearTimeout(timeout);
   }, []);
 
-  // Compute worst-case status per enclosure across all its animals
+  // Compute worst-case status per enclosure across all animals
   const enclosureStatusMap = useMemo(() => {
     const map = new Map<string, HealthStatus>();
     for (const animal of animals) {
@@ -44,7 +47,6 @@ export default function EnclosureLayer() {
     return ids;
   }, [enclosureStatusMap]);
 
-  // Embed status as a GeoJSON property so MapLibre match expressions can use it
   const geojson: FeatureCollection<Point> = useMemo(() => ({
     type: 'FeatureCollection',
     features: enclosures.map((enc) => ({
@@ -61,6 +63,9 @@ export default function EnclosureLayer() {
     })),
   }), [enclosureStatusMap]);
 
+  // Theme-dependent opacity for enclosure fills (slightly higher on dark for visibility)
+  const fillAlpha = dark ? 0.18 : 0.12;
+
   return (
     <>
       <Source id="enclosures" type="geojson" data={geojson}>
@@ -70,10 +75,10 @@ export default function EnclosureLayer() {
           paint={{
             'circle-color': [
               'match', ['get', 'status'],
-              'alert',        'rgba(244,63,94,0.12)',
-              'mild_concern', 'rgba(217,119,6,0.12)',
-              'healthy',      'rgba(45,212,191,0.12)',
-              /* offline */   'rgba(245,245,245,0.75)',
+              'alert',        `rgba(204,68,68,${fillAlpha})`,
+              'mild_concern', `rgba(212,152,44,${fillAlpha})`,
+              'healthy',      `rgba(78,154,61,${fillAlpha})`,
+              /* offline */   dark ? 'rgba(50,50,42,0.40)' : 'rgba(173,165,146,0.50)',
             ],
             'circle-opacity': visible ? 1 : 0,
             'circle-opacity-transition': { duration: 800, delay: 200 },
@@ -86,10 +91,10 @@ export default function EnclosureLayer() {
             'circle-stroke-width': 1.5,
             'circle-stroke-color': [
               'match', ['get', 'status'],
-              'alert',        '#F43F5E',
-              'mild_concern', '#D97706',
-              'healthy',      '#2DD4BF',
-              /* offline */   '#D0D0D0',
+              'alert',        '#CC4444',
+              'mild_concern', '#D4982C',
+              'healthy',      '#4E9A3D',
+              /* offline */   dark ? '#3A3A30' : '#D0D0D0',
             ],
             'circle-stroke-opacity': visible ? 1 : 0,
             'circle-stroke-opacity-transition': { duration: 800, delay: 400 },
@@ -104,10 +109,18 @@ export default function EnclosureLayer() {
           longitude={enc.labelPosition.lng}
           anchor="center"
         >
-          <div className="backdrop-blur-sm bg-white/70 px-2 py-0.5 rounded-md">
+          <div className={`backdrop-blur-sm px-2 py-0.5 rounded-md ${
+            dark
+              ? 'bg-[#1C221A]/80'
+              : 'bg-[#FEFBF3]/80'
+          }`}>
             <span
-              className="text-secondary font-medium"
-              style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px' }}
+              className="font-medium"
+              style={{
+                fontFamily: 'var(--font-outfit), Outfit, sans-serif',
+                fontSize: '13px',
+                color: dark ? '#8B9A7A' : '#7B8968',
+              }}
             >
               {enc.name}
             </span>
