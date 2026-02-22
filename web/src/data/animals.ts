@@ -11,7 +11,7 @@ export const animals: Animal[] = [
     enclosureId: 'polar-frontier',
     behaviorToday: { moving: 45, resting: 35, eating: 20 },
     currentState: 'moving',
-    cameraFrameUrl: 'https://placehold.co/640x360/f5f5f5/6b6b6b?text=Camera+Feed',
+    cameraFrameUrl: '/videos/vera-ai.mp4',
     alerts: [],
     history7d: [
       { date: '2026-02-15', moving: 42, resting: 38, eating: 20 },
@@ -32,7 +32,7 @@ export const animals: Animal[] = [
     enclosureId: 'polar-frontier',
     behaviorToday: { moving: 55, resting: 25, eating: 20 },
     currentState: 'moving',
-    cameraFrameUrl: '/videos/vera-ai.mp4',
+    cameraFrameUrl: '/videos/processed_output.mp4',
     alerts: [],
     history7d: [
       { date: '2026-02-15', moving: 52, resting: 28, eating: 20 },
