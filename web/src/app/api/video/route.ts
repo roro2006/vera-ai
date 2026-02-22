@@ -3,8 +3,6 @@ import fs from 'fs';
 import path from 'path';
 import { Readable } from 'stream';
 
-const VIDEO_PATH = path.join(process.cwd(), 'src', 'app', 'public', 'processed_output.mp4');
-
 function nodeToWeb(stream: Readable): ReadableStream<Uint8Array> {
   return new ReadableStream({
     start(controller) {
@@ -19,7 +17,18 @@ function nodeToWeb(stream: Readable): ReadableStream<Uint8Array> {
 }
 
 export async function GET(request: NextRequest) {
-  const stat = fs.statSync(VIDEO_PATH);
+  const file = request.nextUrl.searchParams.get('file');
+  if (!file || /[/\\]/.test(file)) {
+    return NextResponse.json({ error: 'Invalid file parameter' }, { status: 400 });
+  }
+
+  const videoPath = path.join(process.cwd(), 'public', 'videos', file);
+
+  if (!fs.existsSync(videoPath)) {
+    return NextResponse.json({ error: 'Video not found' }, { status: 404 });
+  }
+
+  const stat = fs.statSync(videoPath);
   const fileSize = stat.size;
   const range = request.headers.get('range');
 
@@ -29,7 +38,7 @@ export async function GET(request: NextRequest) {
     const end = endStr ? parseInt(endStr, 10) : fileSize - 1;
     const chunksize = end - start + 1;
 
-    return new NextResponse(nodeToWeb(fs.createReadStream(VIDEO_PATH, { start, end })), {
+    return new NextResponse(nodeToWeb(fs.createReadStream(videoPath, { start, end })), {
       status: 206,
       headers: {
         'Content-Range': `bytes ${start}-${end}/${fileSize}`,
@@ -40,7 +49,7 @@ export async function GET(request: NextRequest) {
     });
   }
 
-  return new NextResponse(nodeToWeb(fs.createReadStream(VIDEO_PATH)), {
+  return new NextResponse(nodeToWeb(fs.createReadStream(videoPath)), {
     headers: {
       'Content-Length': String(fileSize),
       'Content-Type': 'video/mp4',

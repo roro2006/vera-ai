@@ -46,7 +46,7 @@ export default function MapView() {
           zoom: 16.25,
         }}
         style={{ width: '100%', height: '100%' }}
-        mapStyle={`https://api.maptiler.com/maps/dataviz-light/style.json?key=${MAPTILER_KEY}`}
+        mapStyle={`https://api.maptiler.com/maps/${state.theme === 'dark' ? 'dataviz-dark' : 'dataviz-light'}/style.json?key=${MAPTILER_KEY}`}
         cooperativeGestures
       >
         <NavigationControl position="bottom-right" />

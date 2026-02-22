@@ -26,13 +26,13 @@ export const animals: Animal[] = [
   {
     id: 'nanuq',
     name: 'Nanuq',
-    species: 'Arctic Fox',
+    species: 'Polar Bear',
     status: 'healthy',
     position: { lat: 40.1572, lng: -83.1190 },
     enclosureId: 'polar-frontier',
     behaviorToday: { moving: 55, resting: 25, eating: 20 },
     currentState: 'moving',
-    cameraFrameUrl: 'https://placehold.co/640x360/f5f5f5/6b6b6b?text=Camera+Feed',
+    cameraFrameUrl: '/videos/vera-ai.mp4',
     alerts: [],
     history7d: [
       { date: '2026-02-15', moving: 52, resting: 28, eating: 20 },

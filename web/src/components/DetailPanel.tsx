@@ -20,6 +20,14 @@ export default function DetailPanel() {
     setModalOpen(false);
   }, [state.selectedAnimal]);
 
+  const url= state.selectedAnimal?.cameraFrameUrl
+
+  if (url) {
+    console.log("url received: ", url);
+  } else {
+    console.log("ERORROROEROR");
+  }
+
   return (
     <AnimatePresence>
       {state.panelOpen && state.selectedAnimal && (
@@ -58,6 +66,7 @@ export default function DetailPanel() {
           {modalOpen && (
             <CameraModal
               animalName={state.selectedAnimal.name}
+              videoUrl={state.selectedAnimal.cameraFrameUrl!}
               onClose={() => setModalOpen(false)}
             />
           )}
