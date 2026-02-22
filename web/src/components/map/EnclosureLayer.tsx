@@ -5,7 +5,7 @@ import { Source, Layer, Marker } from 'react-map-gl/maplibre';
 import { enclosures } from '@/data/enclosures';
 import { animals } from '@/data/animals';
 import EnclosureWarningBadge from './EnclosureWarningBadge';
-import type { FeatureCollection, Polygon } from 'geojson';
+import type { FeatureCollection, Point } from 'geojson';
 
 export default function EnclosureLayer() {
   const [visible, setVisible] = useState(false);
@@ -27,8 +27,8 @@ export default function EnclosureLayer() {
     return ids;
   }, []);
 
-  // Build GeoJSON FeatureCollection with id property on each feature
-  const geojson: FeatureCollection<Polygon> = useMemo(() => ({
+  // Build GeoJSON FeatureCollection using enclosure center points
+  const geojson: FeatureCollection<Point> = useMemo(() => ({
     type: 'FeatureCollection',
     features: enclosures.map((enc) => ({
       type: 'Feature' as const,
@@ -37,7 +37,10 @@ export default function EnclosureLayer() {
         name: enc.name,
         hasAlert: alertEnclosureIds.has(enc.id),
       },
-      geometry: enc.polygon.geometry,
+      geometry: {
+        type: 'Point',
+        coordinates: [enc.labelPosition.lng, enc.labelPosition.lat],
+      },
     })),
   }), [alertEnclosureIds]);
 
@@ -45,42 +48,41 @@ export default function EnclosureLayer() {
   const alertIds = Array.from(alertEnclosureIds);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const fillColorExpr: any = [
+  const circleColorExpr: any = [
     'match',
     ['get', 'id'],
-    ...alertIds.flatMap((id) => [id, 'rgba(244,63,94,0.03)']),
-    '#F5F5F5',
+    ...alertIds.flatMap((id) => [id, 'rgba(244,63,94,0.12)']),
+    'rgba(245,245,245,0.75)',
   ];
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const lineColorExpr: any = [
+  const strokeColorExpr: any = [
     'match',
     ['get', 'id'],
     ...alertIds.flatMap((id) => [id, '#F43F5E']),
-    '#E0E0E0',
+    '#D0D0D0',
   ];
 
   return (
     <>
       <Source id="enclosures" type="geojson" data={geojson}>
         <Layer
-          id="enclosure-fill"
-          type="fill"
+          id="enclosure-circle"
+          type="circle"
           paint={{
-            'fill-color': fillColorExpr,
-            'fill-opacity': visible ? 0.6 : 0,
-            'fill-opacity-transition': { duration: 800, delay: 200 },
-          }}
-        />
-        <Layer
-          id="enclosure-line"
-          type="line"
-          paint={{
-            'line-color': lineColorExpr,
-            'line-width': 1.5,
-            'line-dasharray': [4, 2],
-            'line-opacity': visible ? 1 : 0,
-            'line-opacity-transition': { duration: 800, delay: 400 },
+            'circle-color': circleColorExpr,
+            'circle-opacity': visible ? 1 : 0,
+            'circle-opacity-transition': { duration: 800, delay: 200 },
+            'circle-radius': [
+              'interpolate', ['linear'], ['zoom'],
+              14, 16,
+              16, 36,
+              18, 72,
+            ],
+            'circle-stroke-width': 1.5,
+            'circle-stroke-color': strokeColorExpr,
+            'circle-stroke-opacity': visible ? 1 : 0,
+            'circle-stroke-opacity-transition': { duration: 800, delay: 400 },
           }}
         />
       </Source>
