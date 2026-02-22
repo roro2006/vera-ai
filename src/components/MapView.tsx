@@ -5,6 +5,7 @@ import Map, { NavigationControl } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useApp } from '@/context/AppContext';
 import EnclosureLayer from '@/components/map/EnclosureLayer';
+import AnimalMarkers from '@/components/map/AnimalMarkers';
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
@@ -41,6 +42,7 @@ export default function MapView() {
       >
         <NavigationControl position="bottom-right" />
         <EnclosureLayer />
+        <AnimalMarkers />
       </Map>
     </div>
   );
