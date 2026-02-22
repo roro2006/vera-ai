@@ -35,7 +35,7 @@ function CustomTooltip({
 }) {
   if (!active || !payload || !payload.length) return null;
   return (
-    <div className="bg-white border border-border rounded px-2 py-1 text-xs shadow-sm">
+    <div className="bg-surface border border-border rounded px-2 py-1 text-xs shadow-sm">
       <p>{label}</p>
       <p className="font-medium">{payload[0].value}%</p>
     </div>

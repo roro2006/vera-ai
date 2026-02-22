@@ -29,7 +29,7 @@ export default function DetailPanel() {
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: '100%', opacity: 0 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          className="fixed inset-0 z-30 lg:relative lg:inset-auto lg:z-auto w-full lg:w-[35%] border-l border-border bg-white overflow-y-auto"
+          className="fixed inset-0 z-30 lg:relative lg:inset-auto lg:z-auto w-full lg:w-[35%] border-l border-border bg-surface overflow-y-auto"
         >
           {/* Mobile back button (≤1024px) */}
           <button

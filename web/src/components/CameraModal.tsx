@@ -28,7 +28,7 @@ export default function CameraModal({ imageUrl, animalName, onClose }: CameraMod
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.2 }}
-          className="relative max-w-[70vw] max-h-[80vh] bg-white rounded-xl overflow-hidden"
+          className="relative max-w-[70vw] max-h-[80vh] bg-surface rounded-xl overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Close button */}
