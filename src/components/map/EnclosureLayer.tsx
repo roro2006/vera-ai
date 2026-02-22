@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Source, Layer, Marker } from 'react-map-gl/mapbox';
 import { enclosures } from '@/data/enclosures';
 import { animals } from '@/data/animals';
+import EnclosureWarningBadge from './EnclosureWarningBadge';
 import type { FeatureCollection, Polygon } from 'geojson';
 
 export default function EnclosureLayer() {
@@ -101,6 +102,15 @@ export default function EnclosureLayer() {
           </div>
         </Marker>
       ))}
+
+      {enclosures
+        .filter((enc) => alertEnclosureIds.has(enc.id))
+        .map((enc) => (
+          <EnclosureWarningBadge
+            key={`warning-${enc.id}`}
+            position={{ lat: enc.labelPosition.lat, lng: enc.labelPosition.lng }}
+          />
+        ))}
     </>
   );
 }
