@@ -6,6 +6,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { useApp } from '@/context/AppContext';
 import EnclosureLayer from '@/components/map/EnclosureLayer';
 import AnimalMarkers from '@/components/map/AnimalMarkers';
+import ThresholdLegend from '@/components/map/ThresholdLegend';
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
@@ -21,7 +22,7 @@ export default function MapView() {
 
   return (
     <div
-      className={`flex-1 transition-opacity duration-[800ms] ${
+      className={`relative flex-1 transition-opacity duration-[800ms] ${
         mounted ? 'opacity-100' : 'opacity-0'
       } ${
         state.panelOpen
@@ -29,6 +30,7 @@ export default function MapView() {
           : 'transition-all duration-300'
       }`}
     >
+      <ThresholdLegend />
       <Map
         mapboxAccessToken={MAPBOX_TOKEN}
         initialViewState={{
