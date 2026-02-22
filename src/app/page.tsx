@@ -3,6 +3,7 @@
 import { AppProvider } from '../context/AppContext';
 import TopBar from '../components/TopBar';
 import MapView from '../components/MapView';
+import DetailPanel from '../components/DetailPanel';
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
         <TopBar />
         <div className="flex flex-1 overflow-hidden">
           <MapView />
+          <DetailPanel />
         </div>
       </div>
     </AppProvider>
