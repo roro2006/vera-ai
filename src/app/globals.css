@@ -2,7 +2,7 @@
 @import "../styles/dot-pulse.css";
 
 @theme {
-  --font-sans: 'Inter', sans-serif;
+  --font-sans: var(--font-dm-sans), sans-serif;
   --color-surface: #FAFAFA;
   --color-border: #E5E5E5;
   --color-primary: #1A1A1A;
@@ -14,6 +14,11 @@
   --color-behavior-moving: #3B82F6;
   --color-behavior-resting: #A78BFA;
   --color-behavior-eating: #D97706;
+  --color-landing-bg: #0A0A0A;
+  --color-landing-surface: #141414;
+  --color-landing-border: #1F1F1F;
+  --color-landing-text: #F5F5F5;
+  --color-landing-text-secondary: #888888;
   --animate-breathe: breathe 4s ease-in-out infinite;
 }
 
